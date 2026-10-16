@@ -13,6 +13,10 @@ public class LightReceiver : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private bool isLit;
 
+    [SerializeField]
+    [Range(1f, 180f)]
+    private float beamAngle = 60f;
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -46,14 +50,22 @@ public class LightReceiver : MonoBehaviour
 
             if (distance <= playerLight.pointLightOuterRadius)
             {
-                RaycastHit2D hit = Physics2D.Raycast(
-                    lightPosition,
-                    direction.normalized,
-                    distance,
-                    blockingLayers
-                );
+                Vector2 beamDirection = playerLight.transform.up;
 
-                isLit = hit.collider == null;
+                float angleToCrystal = Vector2.Angle(beamDirection, direction);
+
+                if (angleToCrystal <= beamAngle / 2f)
+                {
+                    RaycastHit2D hit = Physics2D.Raycast(
+                        lightPosition,
+                        direction.normalized,
+                        distance,
+                        blockingLayers
+                    );
+
+                    isLit = hit.collider == null;
+                }
+
             }
         }
 

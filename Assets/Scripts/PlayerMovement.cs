@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D rb;
     private Vector2 movement;
+    public Vector2 LastMoveDirection { get; private set; }
 
     void Start()
     {
@@ -39,6 +40,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         movement = movement.normalized;
+
+        if (movement != Vector2.zero)
+        {
+            LastMoveDirection = movement;
+        }
+
     }
 
     void FixedUpdate()
